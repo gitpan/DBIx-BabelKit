@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>BabelKit PHP Handle Creation</title>
+<link rel="STYLESHEET" type="text/css" href="main.css">
+</head>
+
+<!--
+  Copyright (C) 2003 John Gorman <jgorman@webbysoft.com>
+  http://www.webbysoft.com/babelkit
+-->
+
+<body bgcolor="#F0FFFF" text="#000000"
+      link="#873852" vlink="#873852" alink="#B52E2E">
+
+<center>
+<table width="600">
+<tr>
+<td>
+
+<center><h2>
+<a href="http://www.webbysoft.com/babelkit">BabelKit</a>
+PHP Handle Creation</h2></center>
+
+How to create a new PHP BabelKit access handle.
+
+
+<h4>new BabelKit()</h4>
+
+<pre>
+require_once('BabelKit.php');
+
+$babelkit = new BabelKit($dbh, array(
+                         'table' => 'bk_code'
+                         )):
+</pre>
+
+<p>
+The new BabelKit() method returns a new BabelKit handle
+object.
+
+<p>
+$dbh must be either a PEAR DB or a phplib database handle.
+
+<p>
+The optional 'table' parameter can be used to specify
+which of several code tables to use.  The default is
+'bk_code'.
+
+
+<h4>Using PEAR DB</h4>
+
+Here is an example of how to use the PEAR DB library.
+If you already have a PEAR DB handle open, just pass
+it into BabelKit.
+
+<pre>
+require_once('DB.php');
+$pear_dbh = DB::connect("mysql://webbysoft:124c41@localhost/webbysoft");
+if (DB::iserror($pear_dbh)) {
+    die($pear_dbh->getMessage());
+}
+
+require_once('BabelKit.php');
+
+$babelkit = new BabelKit($pear_dbh);
+</pre>
+
+
+<h4>Using phplib</h4>
+
+Here is an example of how to use the phplib library.
+If you already have a phplib handle open, just pass
+it into BabelKit.
+
+<pre>
+require_once('/usr/lib/phplib/db_mysql.inc');
+$phplib_dbh            = new DB_Sql;
+$phplib_dbh->Host      = 'localhost';
+$phplib_dbh->Database  = 'webbysoft';
+$phplib_dbh->User      = 'webbysoft';
+$phplib_dbh->Password  = '124c41';
+
+require_once('BabelKit.php');
+
+$babelkit = new BabelKit($phplib_dbh);
+</pre>
+
+
+</td>
+</tr>
+</table>
+</center>
+
+</body>
+</html>
