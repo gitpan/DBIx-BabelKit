@@ -40,7 +40,7 @@ The BabelKit Perl source code is in the perl directory:
     bk_admin_main.pl  - BabelKit Translation Utility.
     bk_connect.pl     - Database connection setup.
     bk_demo.pl        - BabelKit Demo page.
-    t/test.t          - Regression testing.
+    regression.test   - Regression testing.
     Makefile.PL       - Makefile setup.
 </pre>
 
@@ -69,7 +69,7 @@ should be set up to autocommit.
 
 <p>
 bk_connect.pl is used by bk_admin.pl, bk_demo.pl
-and by t/test.t.
+and by regression.test.
 
 
 <h4>3. BabelKit.pm Installation</h4>
@@ -80,10 +80,13 @@ include path.  Or do the makefile thing:
 <pre>
     $ perl Makefile.PL
     $ make
-    $ make test         # This WILL FAIL unless you have
-                        # completed the above steps!!!
+    $ make test
     # make install
 </pre>
+
+<p>
+Run regression.test on the basic BabelKit class functions.
+This will fail unless you have completed the above steps!
 
 
 <h4>4. BabelKit Translation Utility Setup</h4>

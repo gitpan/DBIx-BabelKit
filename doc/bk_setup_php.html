@@ -39,8 +39,7 @@ The BabelKit PHP source code is in the php directory:
     bk_admin_main.inc  - BabelKit Translation Utility.
     bk_connect.inc     - Database connection setup.
     bk_demo.php        - BabelKit demo page.
-    TEST               - Run t/test.t
-    t/test.t           - Regression testing.
+    regression.test    - Regression testing.
 </pre>
 
 BabelKit requires the PEAR DB library or phplib.
@@ -66,7 +65,7 @@ should be set up to autocommit.
 
 <p>
 bk_connect.inc is used by bk_admin.php, bk_demo.php
-and by t/test.t.  bk_admin.php expects the database
+and by regression.test.  bk_admin.php expects the database
 handle to be set up for autocommit.
 
 
@@ -76,9 +75,8 @@ Copy the BabelKit.php file into a directory on your php
 include_path so that your application code can require it. 
 
 <p>
-Run the TEST script to test the basic BabelKit class
-functions.  This WILL FAIL unless you have completed
-the above steps!!!
+Run regression.test on the basic BabelKit class functions.
+This will fail unless you have completed the above steps!
 
 
 <h4>4. BabelKit Translation Utility Setup</h4>

@@ -30,8 +30,8 @@ function ok($got, $expect = 'NO SECOND ARG') {
     }
 }
 
-require_once('../bk_connect.inc');
-require_once("../BabelKit.php");
+require_once('bk_connect.inc');
+require_once("BabelKit.php");
 ok(1);
 
 $dbh = bk_connect();

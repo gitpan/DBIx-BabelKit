@@ -4,8 +4,8 @@
 # your database.
 #
 # You must also set up the bk_code table schema
-# and load at least the core bk_code records before
-# this will run.  The native language must be English.
+# and load data/bk_setup.core before this will run.
+# The native language must be English.
 
 use Test;
 BEGIN { plan tests => 25 };
@@ -13,8 +13,6 @@ BEGIN { plan tests => 25 };
 use strict;
 use warnings;
 use lib 'blib/lib';
-use lib '../blib/lib';
-use lib '..';
 use DBI;
 use DBIx::BabelKit;
 require("bk_connect.pl");
