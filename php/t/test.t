@@ -1,4 +1,4 @@
-#!/usr/bin/php4 -q
+#!/usr/bin/env php4
 <?php
 
 # You must configure bk_connect.pl to connect with
@@ -11,20 +11,20 @@
 print "1..25\n";
 
 function ok($got, $expect = 'NO SECOND ARG') {
-    global $counter;
-    $counter++;
+    global $ok_counter;
+    $ok_counter++;
     if ($expect === 'NO SECOND ARG') {
-        if ($expect) {
-            print "ok $counter\n";
+        if ($got) {
+            print "ok $ok_counter\n";
         } else {
-            print "not ok $counter\n";
+            print "not ok $ok_counter\n";
         }
     } else {
         if ( $got == $expect ) {
-            print "ok $counter\n";
+            print "ok $ok_counter\n";
         } else {
-            print "not ok $counter\n";
-            print "# Test $counter got: '$got'\n";
+            print "not ok $ok_counter\n";
+            print "# Test $ok_counter got: '$got'\n";
             print "#   Expected: '$expect'\n";
         }
     }

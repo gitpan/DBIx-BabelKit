@@ -1,9 +1,12 @@
+CHANGELOG
 MANIFEST
 README
 data/bk_demo.latin1
+data/bk_demo.utf8
 data/bk_schema.mysql
 data/bk_setup.core
 doc/bk_admin.html
+doc/bk_faq.html
 doc/bk_new_perl.html
 doc/bk_new_php.html
 doc/bk_overview.html
