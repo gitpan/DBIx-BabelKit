@@ -17,6 +17,11 @@
 <tr>
 <td>
 
+<div align="right">
+[<a href="bk_schema.html">Code Table Setup</a>]
+[<a href="index.html">Index</a>]
+[<a href="bk_setup_perl.html">Perl Setup</a>]
+</div>
 
 <center><h2>
 <a href="http://www.webbysoft.com/babelkit">BabelKit</a>
@@ -24,11 +29,6 @@ PHP Source Code Setup</h2></center>
 
 Read the <a href="bk_overview.html">Overview</a> and the
 <a href="bk_schema.html">Code Table Setup</a> pages first.
-
-<p>
-Load and test the bk_code table schema definition as well
-as the core data records.  The proceed with the source
-code setup and testing.
 
 <p>
 The BabelKit PHP source code is in the php directory:
@@ -45,32 +45,45 @@ The BabelKit PHP source code is in the php directory:
 
 BabelKit requires the PEAR DB library or phplib.
 
-<h4>BabelKit.php Setup</h4>
+<h4>1. Database Schema and Core Record Loading</h4>
+
+Read and follow directions for
+<a href="bk_schema.html">Code Table Setup</a>.
+
+<p>
+Load and test the bk_code table schema definition as well
+as the core data records.  If you want to run the demo
+load the demo data records.
+
+
+<h4>2. Database Connection Setup</h4>
+
+Customize the bk_connect.inc file to open
+a database handle to your database.  If your application
+setup has already opened a database handle, use that
+handle instead of opening a new one.  The handle
+should be set up to autocommit.
+
+<p>
+bk_connect.inc is used by bk_admin.php, bk_demo.php
+and by t/test.t.  bk_admin.php expects the database
+handle to be set up for autocommit.
+
+
+<h4>3. BabelKit.php Installation</h4>
 
 Copy the BabelKit.php file into a directory on your php
 include_path so that your application code can require it. 
 
-
-<h4>Database Connection Setup</h4>
-
-You can customize the bk_connect.inc file to open
-a database handle to your database.  If your application
-setup has already opened a database handle, use that
-handle instead of opening a new one.
-
 <p>
-bk_connect.inc is used by bk_admin.php, bk_demo.php
-and by t/test.t.
-
-<h4>BabelKit Regression Test</h4>
-
 Run the TEST script to test the basic BabelKit class
-functions.
+functions.  This WILL FAIL unless you have completed
+the above steps!!!
 
 
-<h4>BabelKit Translation Utility Setup</h4>
+<h4>4. BabelKit Translation Utility Setup</h4>
 
-Customize the bk_admin.php file to your situation:
+You may wish to customize the bk_admin.php file to your situation:
 
 <ul>
 <li>
@@ -89,12 +102,22 @@ Require bk_admin_main.inc and call the bka_admin_main() function.
 </li>
 </ul>
 
+It is fine to make multiple copies of bk_admin.php
+to set up different permissions for different classes
+of users.
 
-<h4>Demo Page Setup</h4>
+
+<h4>5. Demo Page Setup</h4>
 
 In order for the demo page to function, you will need
 to load the <a href="bk_schema.html#demodata">demo data records</a>.
 
+<p>
+<div align="right">
+[<a href="bk_schema.html">Code Table Setup</a>]
+[<a href="index.html">Index</a>]
+[<a href="bk_setup_perl.html">Perl Setup</a>]
+</div>
 
 </td>
 </tr>

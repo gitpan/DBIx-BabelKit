@@ -31,6 +31,13 @@ sub bk_demo {
     print $cgi->header;
 
     my $title = "BabelKit Multilanguage Code Select Perl Demo";
+
+    my $display_lang = $cgi->param('display_lang') || '';
+    my $mycurrency = $cgi->param('currency') || '';
+    my $day = $cgi->param('day') || '';
+    my $countrystr = join(',', $cgi->param('country[]') );
+    my $monthstr = join(',', $cgi->param('month[]') );
+
     print "
     <html>
     <head>
@@ -41,6 +48,7 @@ sub bk_demo {
     link=\"#0000cc\" vlink=\"#0066ff\" alink=\"#ffcc00\">
 
     <center>
+    <form action=\"" . $cgi->url(-absolute=>1) . "\" method=\"post\">
     <table border=\"1\" width=\"600\" cellpadding=\"20\">
     <tr>
     <td>
@@ -65,27 +73,37 @@ sub bk_demo {
     This page shows off the BabelKit code select functions.
     Select another language for the code description display.
     Select various combinations of countries and months then
-    click [Test BabelKit] at the bottom.
+    click [Test BabelKit] at the bottom to see the selected
+    codes:
+
+    <p>
+    <table border=\"3\" cellpadding=\"10\">
+    <tr><th>Variable</th><th>Code(s)</th></tr>
+    <tr><td>\$display_lang</td><td>'$display_lang'</td></tr>
+    <tr><td>\$mycurrency</td><td>'$mycurrency'</td></tr>
+    <tr><td>day</td><td>'$day'</td></tr>
+    <tr><td>country</td><td>[$countrystr]</td></tr>
+    <tr><td>month</td><td>[$monthstr]</td></tr>
+    </table>
 
     <p>
     Have fun!
-
-    </td></tr><tr><td>
-    <form action=\"" . $cgi->url(-absolute=>1) . "\" method=\"post\">
     ";
 
     #
     # Select Display Language.
     #
 
-    my $display_lang = $cgi->param('display_lang') || '';
-    print "<b>Select another display language!</b>
+    print "</td></tr><tr><td>
+    <b>Select another display language!</b>
     <p>Specify the variable name as 'display_lang'.
     <br>Pass in the native language as the default value.
+    <br>Submit form when selection changes.
     <pre>
 print \$babelkit->select('code_lang', \$display_lang,
                          var_name =&gt; 'display_lang',
-                         default  =&gt; \$babelkit->{native}
+                         default  =&gt; \$babelkit->{native},
+                         options  =&gt; 'onchange=\"submit()\"'
 );
     </pre>
     \$display_lang is '$display_lang':
@@ -93,14 +111,14 @@ print \$babelkit->select('code_lang', \$display_lang,
     ";
     print $babelkit->select('code_lang', $display_lang,
                              var_name => 'display_lang',
-                             default  => $babelkit->{native}
+                             default  => $babelkit->{native},
+                             options  => 'onchange="submit()"'
     );
 
     #
     # Currency Dropdown.
     #
 
-    my $mycurrency = $cgi->param('currency') || '';
     print "</td></tr><tr><td>
     <b>Select a currency.</b>
     <p>Pass in a specific code value.
@@ -120,7 +138,6 @@ print \$babelkit->select('currency', \$display_lang,
     # Day Radiobox.
     #
 
-    my $day = $cgi->param('day') || '';
     print "</td></tr><tr><td>
     <b>Radiobox for days of the week.</b>
     <p>Constrain choices to the weekdays (1-5).
@@ -143,12 +160,11 @@ print \$babelkit->radio('day', \$display_lang,
     # Country Select Multiple.
     #
 
-    my $countrystr = join(',', $cgi->param('country[]') );
     print "</td></tr><tr><td>
     <b>Select multiple countries</b>.
     <p>Specify a window scrolling size of 10.
     <p>Experiment with Ctrl-click and Shift-click
-    <br>to select multiple items.
+    <br>to select multiple countries.
     <pre>
 print \$babelkit->multiple('country', \$display_lang,
                            size =&gt; 10
@@ -165,7 +181,6 @@ print \$babelkit->multiple('country', \$display_lang,
     # Month Checkbox.
     #
 
-    my $monthstr = join(',', $cgi->param('month[]') );
     print "</td></tr><tr><td>
     <b>Checkbox for multiple month selections.</b>
     <p>Simple no frills method call.
@@ -181,10 +196,11 @@ print \$babelkit->checkbox('month', \$display_lang);
     print "
     </td></tr><tr><td>
     <input type=submit value=\"Test BabelKit\">
-    </form>
+    &lt;-- Click here to see the updated perl variables!
     </td>
     </tr>
     </table>
+    </form>
     </center>
     </body>
     </html>

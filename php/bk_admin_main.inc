@@ -146,7 +146,7 @@ function bka_translations() {
     foreach ( $lang_rows as $lang_row ) {
         if ($lang_row[3] == 'd') continue;
         $lang_cd = $lang_row[0];
-        printf("%6s", $lang_cd);
+        printf("<b>%6s</b>", $lang_cd);
     }
 
     # Print the count array.

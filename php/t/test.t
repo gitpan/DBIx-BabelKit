@@ -1,3 +1,4 @@
+#!/usr/bin/php4 -q
 <?php
 
 # You must configure bk_connect.pl to connect with
@@ -53,9 +54,14 @@ ok(1);
 
 # And gets.
 
-ok( join(',', $bkh->get('regression', 'en', '1')), 'Monday,1,' );
-ok( join(',', $bkh->get('regression', 'en',  2 )), 'Tuesday,2,' );
-ok( join(',', $bkh->get('regression', 'fr',  2 )), 'mardi,0,' );
+list( $desc, $order, $flag ) = $bkh->get('regression', 'en', '1');
+ok( "$desc,$order,$flag", 'Monday,1,' );
+
+list( $desc, $order, $flag ) = $bkh->get('regression', 'en',  2 );
+ok( "$desc,$order,$flag", 'Tuesday,2,' );
+
+list( $desc, $order, $flag ) = $bkh->get('regression', 'fr',  2 );
+ok( "$desc,$order,$flag", 'mardi,0,' );
 
 # Simple select.
 $expect = '<select name="regression">
@@ -65,12 +71,13 @@ $expect = '<select name="regression">
 </select>
 ';
 ok( $bkh->select('regression', 'fr', array(
-                 select_prompt => 'Coffee Date?'
+                 'select_prompt' => 'Coffee Date?'
                  )), $expect );
 
 # Slave & desc methods.
 $bkh->slave('regression', '3', 'wednes day');
-ok( join(',', $bkh->get('regression', 'en', 3)), 'wednes day,3,' );
+list( $desc, $order, $flag ) = $bkh->get('regression', 'en', 3);
+ok( "$desc,$order,$flag", 'wednes day,3,' );
 ok( $bkh->desc('regression', 'fr', 3),           'wednes day' );
 ok( $bkh->ucfirst('regression', 'fr', 3),        'Wednes day' );
 ok( $bkh->ucwords('regression', 'fr', 3),        'Wednes Day' );
@@ -79,57 +86,63 @@ ok( $bkh->render('regression', 'fr', 3),         'wednes day' );
 ok( $bkh->data('regression', 'en', 3),           'wednes day' );
 ok( $bkh->data('regression', 'fr', 3),           '' );
 ok( $bkh->param('regression', 3),                'wednes day' );
+
 $bkh->slave('regression', '3', 'Wednesday');
-ok( join(',', $bkh->get('regression', 'en', 3)), 'Wednesday,3,' );
+list( $desc, $order, $flag ) = $bkh->get('regression', 'en', 3);
+ok( "$desc,$order,$flag", 'Wednesday,3,' );
 
 
 # Select options.
-$expect = '<select name="regression_test">
+$expect = '<select name="regression_test" onchange="submit()">
 <option value="">(None)
 <option value="1">Monday
 <option value="2" selected>Mardi
 </select>
 ';
 ok( $bkh->select('regression', 'fr', array(
-                var_name     => 'regression_test',
-                subset       => array( 1, '2' ),
-                value        => '2',
-                blank_prompt => '(None)'
+                'var_name'     => 'regression_test',
+                'value'        => '2',
+                'subset'       => array( 1, '2' ),
+                'options'      => 'onchange="submit()"',
+                'blank_prompt' => '(None)'
                 )), $expect );
 
 # Radiobox options.
-$expect = '<input type="radio" name="rt" value="">(None)<br>
-<input type="radio" name="rt" value="1">Monday<br>
-<input type="radio" name="rt" value="2" checked>Mardi';
+$expect = '<input type="radio" name="rt" onchange="submit()" value="">(None)<br>
+<input type="radio" name="rt" onchange="submit()" value="1">Monday<br>
+<input type="radio" name="rt" onchange="submit()" value="2" checked>Mardi';
 ok( $bkh->radio('regression', 'fr', array(
-                var_name     => 'rt',
-                subset       => array( 1, '2' ),
-                'default'    => '2',
-                blank_prompt => '(None)'
+                'var_name'     => 'rt',
+                'default'      => '2',
+                'subset'       => array( 1, '2' ),
+                'options'      => 'onchange="submit()"',
+                'blank_prompt' => '(None)'
                 )), $expect);
 
 # Select multiple options.
-$expect= '<select multiple name="reg_test[]" size="10">
+$expect= '<select multiple name="reg_test[]" onchange="submit()" size="10">
 <option value="1">Monday
 <option value="2" selected>Mardi
 <option value="3" selected>Wednesday
 </select>
 ';
 ok( $bkh->multiple('regression', 'fr', array(
-                var_name => 'reg_test',
-                subset   => array( 1, '2', 3 ),
-                value    => array( '2', 3 ),
-                size     => 10
+                'var_name' => 'reg_test',
+                'value'    => array( '2', 3 ),
+                'subset'   => array( 1, '2', 3 ),
+                'options'  => 'onchange="submit()"',
+                'size'     => 10
                 )), $expect);
 
 # Checkbox options.
-$expect = '<input type="checkbox" name="checkbox_test[]" value="1" checked>Monday<br>
-<input type="checkbox" name="checkbox_test[]" value="2">Mardi<br>
-<input type="checkbox" name="checkbox_test[]" value="3" checked>Wednesday';
+$expect = '<input type="checkbox" name="checkbox_test[]" onchange="submit()" value="1" checked>Monday<br>
+<input type="checkbox" name="checkbox_test[]" onchange="submit()" value="2">Mardi<br>
+<input type="checkbox" name="checkbox_test[]" onchange="submit()" value="3" checked>Wednesday';
 ok( $bkh->checkbox('regression', 'fr', array(
-                var_name => 'checkbox_test',
-                subset   => array( 1, '2', 3 ),
-                value    => array( '1', 3 ),
+                'var_name' => 'checkbox_test',
+                'value'    => array( '1', 3 ),
+                'subset'   => array( 1, '2', 3 ),
+                'options'  => 'onchange="submit()"'
                 )), $expect);
 
 # Clean up the test data.
@@ -141,3 +154,4 @@ ok(1);
 $rows = $bkh->full_set('regression', 'fr');
 ok(count($rows), 0);
 
+?>

@@ -21,6 +21,17 @@ function bk_demo() {
     $babelkit = new BabelKit($dbh);
 
     $title = "BabelKit Multilanguage Code Select PHP Demo";
+
+    $display_lang = $_POST['display_lang'];
+    $mycurrency = $_POST['currency'];
+    $day = $_POST['day'];
+    $country = $_POST['country'];
+    if (!is_array($country)) $country = array();
+    $countrystr = join(',', $country);
+    $month = $_POST['month'];
+    if (!is_array($month)) $month = array();
+    $monthstr = join(',', $month);
+
     print "
     <html>
     <head>
@@ -31,6 +42,7 @@ function bk_demo() {
     link=\"#0000cc\" vlink=\"#0066ff\" alink=\"#ffcc00\">
 
     <center>
+    <form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\">
     <table border=\"1\" width=\"600\" cellpadding=\"20\">
     <tr>
     <td>
@@ -55,87 +67,93 @@ function bk_demo() {
     This page shows off the BabelKit code select functions.
     Select another language for the code description display.
     Select various combinations of countries and months then
-    click [Test BabelKit] at the bottom.
+    click [Test BabelKit] at the bottom to see the selected
+    codes:
+
+    <p>
+    <table border=\"3\" cellpadding=\"10\">
+    <tr><th>Variable</th><th>Code(s)</th></tr>
+    <tr><td>\$display_lang</td><td>'$display_lang'</td></tr>
+    <tr><td>\$mycurrency</td><td>'$mycurrency'</td></tr>
+    <tr><td>day</td><td>'$day'</td></tr>
+    <tr><td>country</td><td>[$countrystr]</td></tr>
+    <tr><td>month</td><td>[$monthstr]</td></tr>
+    </table>
 
     <p>
     Have fun!
-
-    </td></tr><tr><td>
-    <form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\">
     ";
 
     #
     # Select Display Language.
     #
 
-    $display_lang = $_POST['display_lang'];
-    print "<b>Select another display language!</b>
+    print "</td></tr><tr><td>
+    <b>Select another display language!</b>
     <p>Specify the variable name as 'display_lang'.
     <br>Pass in the native language as the default value.
+    <br>Submit form when selection changes
     <pre>
 print \$babelkit->select('code_lang', \$display_lang, array(
-                         var_name  =&gt; 'display_lang',
-                         'default' =&gt; \$babelkit-&gt;native
+                         'var_name' =&gt; 'display_lang',
+                         'default'  =&gt; \$babelkit-&gt;native,
+                         'options'  =&gt; 'onchange=\"submit()\"'
 ));
     </pre>
     \$display_lang is '$display_lang':
     <p>
     ";
     print $babelkit->select('code_lang', $display_lang, array(
-                            var_name  => 'display_lang',
-                            'default' => $babelkit->native
+                            'var_name' => 'display_lang',
+                            'default'  => $babelkit->native,
+                            'options'  => 'onchange="submit()"'
     ));
 
     #
     # Currency Dropdown.
     #
 
-    $mycurrency = $_POST['currency'];
     print "</td></tr><tr><td>
     <b>Select a currency.</b>
     <p>Pass in a specific code value.
     <pre>
 print \$babelkit->select('currency', \$display_lang, array(
-                         value =&gt; \$mycurrency
+                         'value' =&gt; \$mycurrency
 ));
     </pre>
     \$mycurrency is '$mycurrency':
     <p>
     ";
     print $babelkit->select('currency', $display_lang, array(
-                            value => $mycurrency
+                            'value' => $mycurrency
     ));
 
     #
     # Day Radiobox.
     #
 
-    $day = $_POST['day'];
     print "</td></tr><tr><td>
     <b>Radiobox for days of the week.</b>
     <p>Constrain choices to the weekdays (1-5).
     <br>A blank separator displays them all on one line.
     <pre>
 print \$babelkit->radio('day', \$display_lang, array(
-                        subset =&gt; array(1, 2, 3, 4, 5),
-                        sep    =&gt; ''
+                        'subset' =&gt; array(1, 2, 3, 4, 5),
+                        'sep'    =&gt; ''
 ));
     </pre>
     'day' is '$day'.
     <p>
     ";
     print $babelkit->radio('day', $display_lang, array(
-                           subset => array(1, 2, 3, 4, 5),
-                           sep    => ''
+                           'subset' => array(1, 2, 3, 4, 5),
+                           'sep'    => ''
     ));
 
     #
     # Country Select Multiple.
     #
 
-    $country = $_POST['country'];
-    if (!is_array($country)) $country = array();
-    $countrystr = join(',', $country);
     print "</td></tr><tr><td>
     <b>Select multiple countries</b>.
     <p>Specify a window scrolling size of 10.
@@ -143,23 +161,20 @@ print \$babelkit->radio('day', \$display_lang, array(
     <br>to select multiple countries.
     <pre>
 print \$babelkit->multiple('country', \$display_lang, array(
-                           size =&gt; 10
+                           'size' =&gt; 10
 ));
     </pre>
     'country' contains [$countrystr]:
     <p>
     ";
     print $babelkit->multiple('country', $display_lang, array(
-                              size => 10
+                              'size' => 10
     ));
 
     #
     # Month Checkbox.
     #
 
-    $month = $_POST['month'];
-    if (!is_array($month)) $month = array();
-    $monthstr = join(',', $month);
     print "</td></tr><tr><td>
     <b>Checkbox for multiple month selections.</b>
     <p>Simple no frills method call.
@@ -174,10 +189,11 @@ print \$babelkit->checkbox('month', \$display_lang);
     print "
     </td></tr><tr><td>
     <input type=submit value=\"Test BabelKit\">
-    </form>
+    &lt;-- Click here to see the updated PHP variables!
     </td>
     </tr>
     </table>
+    </form>
     </center>
     </body>
     </html>

@@ -144,7 +144,7 @@ sub bka_translations {
     for my $lang_row ( @$lang_rows ) {
         next if $lang_row->[3] eq 'd';
         my $lang_cd = $lang_row->[0];
-        printf("%6s", $lang_cd);
+        printf("<b>%6s</b>", $lang_cd);
     }
 
     # Print the count array.

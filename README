@@ -1,5 +1,5 @@
 
-BabelKit Version 1.04 released 2003.04.03.
+BabelKit Version 1.05 released 2003.04.23.
 
 BabelKit is an interface to a universal multilingual
 database code table. BabelKit takes all of the
@@ -13,7 +13,7 @@ languages of interest.
 
 Perl and PHP classes retrieve the code descriptions
 and automatically generate HTML code selection elements
-in the user's language.  Makes internationalization
+in the user's language.  This makes internationalization
 and localization of web sites and database interfaces
 much easier.  The home page contains live multilanguage
 demos.

@@ -1,23 +1,19 @@
 
-INSERT INTO bk_code VALUES ('code_set','en','code_set','code set',-3,'');
 INSERT INTO bk_code VALUES ('code_set','de','code_set','Code set',0,'');
 INSERT INTO bk_code VALUES ('code_set','es','code_set','códigos',0,'');
 INSERT INTO bk_code VALUES ('code_set','fr','code_set','codes',0,'');
 INSERT INTO bk_code VALUES ('code_set','it','code_set','codice',0,'');
 
-INSERT INTO bk_code VALUES ('code_set','en','code_admin','code admin',-1,'');
 INSERT INTO bk_code VALUES ('code_set','es','code_admin','código admin',0,'');
 INSERT INTO bk_code VALUES ('code_set','de','code_admin','Code admin',0,'');
 INSERT INTO bk_code VALUES ('code_set','fr','code_admin','code admin',0,'');
 INSERT INTO bk_code VALUES ('code_set','it','code_admin','admin dei codici',0,'');
-INSERT INTO bk_code VALUES ('code_admin','en','code_admin','param=1 slave=1',0,'');
 
-INSERT INTO bk_code VALUES ('code_set','en','code_lang','language',-2,'');
 INSERT INTO bk_code VALUES ('code_set','de','code_lang','Sprache',0,'');
 INSERT INTO bk_code VALUES ('code_set','es','code_lang','lengua',0,'');
 INSERT INTO bk_code VALUES ('code_set','fr','code_lang','langue',0,'');
 INSERT INTO bk_code VALUES ('code_set','it','code_lang','lingua',0,'');
-INSERT INTO bk_code VALUES ('code_lang','en','en','English',-1,'');
+
 INSERT INTO bk_code VALUES ('code_lang','en','de','German',0,'');
 INSERT INTO bk_code VALUES ('code_lang','en','es','Spanish',0,'');
 INSERT INTO bk_code VALUES ('code_lang','en','fr','French',0,'');

@@ -28,28 +28,29 @@
 #
 ### HTML select common options:
 #
-#               var_name      => $code_set
-#               value         => $_POST[$var_name]
-#               subset        => array('just', 'certain', 'codes')
-#               'default'     => '42'
+#               'var_name'      => 'start_day'
+#               'value'         => $start_day
+#               'default'       => 1
+#               'subset'        => array( 1, 2, 3, 4, 5 )
+#               'options'       => 'onchange="submit()"'
 #
 ### HTML select single value methods:
 # 
 # $str = $bk->select($code_set, $code_lang, $param=array());
-#               select_prompt => "Code set description?"
-#               blank_prompt  => "None"
+#               'select_prompt' => "Code set description?"
+#               'blank_prompt'  => "None"
 #
 # $str = $bk->radio($code_set, $code_lang, $param=array());
-#               blank_prompt  => "None"
-#               sep           => "<br>\n"
+#               'blank_prompt'  => "None"
+#               'sep'           => "<br>\n"
 #
 ### HTML select multiple value methods:
 #
 # $str = $bk->multiple($code_set, $code_lang, $param=array());
-#               size          => 10
+#               'size'          => 10
 #
 # $str = $bk->checkbox($code_set, $code_lang, $param=array());
-#               sep           => "<br>\n"
+#               'sep'           => "<br>\n"
 #
 ### Code sets:
 #
@@ -75,18 +76,26 @@
 class BabelKit {
 
     var $dbh;           # Library handle.
-    var $lib_type;      # Library type: pear | phplib.
+    var $lib_type;      # Library type: pear | adodb | phplib.
     var $table;         # Code table name.
     var $native;        # Native language.
 
     function BabelKit($dbh, $param=array()) {
 
+        $this->dbh = $dbh;
         if (!is_object($dbh))
             die('BabelKit($dbh): $dbh is not an object');
+        if (isset($dbh->databaseType))
+            $this->lib_type = 'adodb';
+        elseif (isset($dbh->Database))
+            $this->lib_type = 'phplib';
+        elseif (isset($dbh->connection))
+            $this->lib_type = 'pear';
+        else
+            die('BabelKit($dbh): $dbh is not a pear/adodb/phplib handle');
 
-        $this->dbh = $dbh;
-        $this->lib_type = isset($dbh->Database) ? 'phplib' : 'pear';
         $this->table = $param['table'] ? $param['table'] : 'bk_code';
+
         $this->native = $this->_find_native();
         if (!$this->native)
             die("BabelKit(): unable to determine native language. " .
@@ -167,6 +176,7 @@ class BabelKit {
         $value         = $param['value'];
         $default       = $param['default'];
         $subset        = $param['subset'];
+        $options       = $param['options'];
         $select_prompt = $param['select_prompt'];
         $blank_prompt  = $param['blank_prompt'];
 
@@ -180,9 +190,10 @@ class BabelKit {
             $Subset = array();
             foreach ( $subset as $val ) $Subset[$val] = 1;
         }
+        if ($options) $options = " $options";
 
         # Drop down box.
-        $select = "<select name=\"$var_name\">\n";
+        $select = "<select name=\"$var_name\"$options>\n";
 
         # Blank options.
         $selected = '';
@@ -230,6 +241,7 @@ class BabelKit {
         $value        = $param['value'];
         $default      = $param['default'];
         $subset       = $param['subset'];
+        $options       = $param['options'];
         $blank_prompt = $param['blank_prompt'];
         $sep          = $param['sep'];
 
@@ -243,18 +255,19 @@ class BabelKit {
             $Subset = array();
             foreach ( $subset as $val ) $Subset[$val] = 1;
         }
+        if ($options) $options = " $options";
         if (!isset($sep)) $sep = "<br>\n";
 
         # Blank options.
         if ($value == '') {
             $selected = 1;
             if ($blank_prompt <> '') {
-                $select .= "<input type=\"radio\" name=\"$var_name\"";
+                $select .= "<input type=\"radio\" name=\"$var_name\"$options";
                 $select .= " value=\"\" checked>$blank_prompt";
             }
         } else {
             if ($blank_prompt <> '') {
-                $select .= "<input type=\"radio\" name=\"$var_name\"";
+                $select .= "<input type=\"radio\" name=\"$var_name\"$options";
                 $select .= " value=\"\">$blank_prompt";
             }
         }
@@ -269,11 +282,11 @@ class BabelKit {
             if ( $code_code == $value ) {
                 if ($select) $select .= $sep;
                 $selected = 1;
-                $select .= "<input type=\"radio\" name=\"$var_name\"";
+                $select .= "<input type=\"radio\" name=\"$var_name\"$options";
                 $select .= " value=\"$code_code\" checked>$code_desc";
             } elseif ($row[3] <> 'd') {
                 if ($select) $select .= $sep;
-                $select .= "<input type=\"radio\" name=\"$var_name\"";
+                $select .= "<input type=\"radio\" name=\"$var_name\"$options";
                 $select .= " value=\"$code_code\">$code_desc";
             }
         }
@@ -281,7 +294,7 @@ class BabelKit {
         # Show missing values.
         if (!$selected) {
             if ($select) $select .= $sep;
-            $select .= "<input type=\"radio\" name=\"$var_name\"";
+            $select .= "<input type=\"radio\" name=\"$var_name\"$options";
             $select .= " value=\"$value\" checked>$value";
         }
 
@@ -300,6 +313,7 @@ class BabelKit {
         $value    = $param['value'];
         $default  = $param['default'];
         $subset   = $param['subset'];
+        $options       = $param['options'];
         $size     = $param['size'];
 
         # Variable name.
@@ -318,9 +332,10 @@ class BabelKit {
             $Subset = array();
             foreach ( $subset as $val ) $Subset[$val] = 1;
         }
+        if ($options) $options = " $options";
 
         # Select multiple box.
-        $select = "<select multiple name=\"$var_name"."[]\"";
+        $select = "<select multiple name=\"$var_name"."[]\"$options";
         if ($size) $select .= " size=\"$size\"";
         $select .= ">\n";
 
@@ -357,6 +372,7 @@ class BabelKit {
         $value    = $param['value'];
         $default  = $param['default'];
         $subset   = $param['subset'];
+        $options  = $param['options'];
         $sep      = $param['sep'];
 
         # Variable name.
@@ -375,6 +391,7 @@ class BabelKit {
             $Subset = array();
             foreach ( $subset as $val ) $Subset[$val] = 1;
         }
+        if ($options) $options = " $options";
         if (!isset($sep)) $sep = "<br>\n";
 
         # Show code set options.
@@ -387,12 +404,12 @@ class BabelKit {
             if ( $Value[$code_code] ) {
                 if ($select) $select .= $sep;
                 $select .= "<input type=\"checkbox\" name=\"$var_name"."[]\"";
-                $select .= " value=\"$code_code\" checked>$code_desc";
+                $select .= "$options value=\"$code_code\" checked>$code_desc";
                 unset($Value[$code_code]);
             } elseif ($row[3] <> 'd') {
                 if ($select) $select .= $sep;
                 $select .= "<input type=\"checkbox\" name=\"$var_name"."[]\"";
-                $select .= " value=\"$code_code\">$code_desc";
+                $select .= "$options value=\"$code_code\">$code_desc";
             }
         }
 
@@ -400,7 +417,7 @@ class BabelKit {
         foreach ( $Value as $code_code => $true ) {
             if ($select) $select .= $sep;
             $select .= "<input type=\"checkbox\" name=\"$var_name"."[]\"";
-            $select .= " value=\"$code_code\" checked>$code_code";
+            $select .= "$options value=\"$code_code\" checked>$code_code";
         }
 
         return $select;
@@ -598,6 +615,7 @@ class BabelKit {
     #
     function _query($query) {
         $result = array();
+
         if ($this->lib_type == 'pear') {
             $dbq = $this->dbh->query($query);
             if (DB::isError($dbq))
@@ -609,13 +627,28 @@ class BabelKit {
                 }
                 $dbq->free();
             }
-        } elseif ($this->lib_type == 'phplib') {
-            $this->dbh->query($query);
-            while ($this->dbh->next_record()) {
-                $result[] = $this->dbh->Record;
+
+        } elseif ($this->lib_type == 'adodb') {
+            $rs = $this->dbh->Execute($query);
+            if ($rs) {
+                if ($rs->connection) {
+                    $result = $rs->GetRows();
+                    $rs->Close();
+                }
+            } else {
+                die("BabelKit: " . $this->dbh->ErrorMsg() . ". query($query)");
             }
-            $this->dbh->free();
+
+        } elseif ($this->lib_type == 'phplib') {
+            $dbh = $this->dbh;
+            $dbh->query($query);
+            while ($dbh->next_record()) {
+                $result[] = $dbh->Record;
+            }
+            $dbh->free();
+
         }
+
         return $result;
     }
 

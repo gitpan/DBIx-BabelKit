@@ -16,6 +16,14 @@
 <tr>
 <td>
 
+
+<div align="right">
+[<a href="bk_read.html">Code Descriptions</a>]
+[<a href="index.html">Index</a>]
+[<a href="bk_set.html">Code Sets</a>]
+</div>
+
+
 <center><h2>
 <a href="http://www.webbysoft.com/babelkit">BabelKit</a>
 HTML Select Element Methods</h2></center>
@@ -48,27 +56,29 @@ select methods.  Here is an example using all of them:
 
 <pre>
 <b># PHP</b>
-print $babelkit->select('day', $lang, array(
-                        'var_name' => 'start_day',
-                        'value'    => $start_day,
-                        'default'  => 1,
-                        'subset'   => array( 1, 2, 3, 4, 5 )
+print $babelkit-&gt;select('day', $lang, array(
+                        'var_name' =&gt; 'start_day',
+                        'value'    =&gt; $start_day,
+                        'default'  =&gt; 1,
+                        'subset'   =&gt; array( 1, 2, 3, 4, 5 ),
+                        'options'  =&gt; 'onchange="submit()"'
                         ));
 </pre>
 
 <pre>
 <b># Perl</b>
-print $babelkit->select('day', $lang,
-                        var_name => 'start_day',
-                        value    => $start_day,
-                        default  => 1,
-                        subset   => [ 1, 2, 3, 4, 5 ]
+print $babelkit-&gt;select('day', $lang,
+                        var_name =&gt; 'start_day',
+                        value    =&gt; $start_day,
+                        default  =&gt; 1,
+                        subset   =&gt; [ 1, 2, 3, 4, 5 ],
+                        options  =&gt; 'onchange="submit()"'
                         );
 </pre>
 
 <pre>
 <b># HTML</b>
-&lt;select name="start_day"&gt;
+&lt;select name="start_day" onchange="submit()"&gt;
 &lt;option value="1" selected&gt;Montag
 &lt;option value="2"&gt;Dienstag
 &lt;option value="3"&gt;Mittwoch
@@ -78,7 +88,7 @@ print $babelkit->select('day', $lang,
 </pre>
 
 
-<h4>'var_name' => 'start_day'</h4>
+<h4>'var_name' =&gt; 'start_day'</h4>
 
 The HTML select methods all declare a form variable
 name which will hold the value(s) that the user selects.
@@ -100,7 +110,7 @@ variable names *without* the '[]' at the end.  For example,
 specify 'sick_days' instead of 'sick_days[]'.
 
 
-<h4>'value' => $start_day</h4>
+<h4>'value' =&gt; $start_day</h4>
 
 If you specify a 'value' option, that value will always be used.
 Select multiple value methods will expect 'value' to
@@ -126,7 +136,7 @@ Perl Handle Creation</a> page to see how this is done.
 Or simply pass the value using the 'value' option.
 
 
-<h4>'default' => 1</h4>
+<h4>'default' =&gt; 1</h4>
 
 If no 'value' is specified, and no value is found in
 the incoming form variable, then BabelKit will use
@@ -134,14 +144,20 @@ any optional 'default' value specified.  In the
 example above the default is the code for Monday.
 
 
-<h4>'subset' => $show_these_codes</h4>
+<h4>'subset' =&gt; $show_these_codes</h4>
 
-<p>
 It is sometimes the case that we only want to display
 a subset of all possible codes for the user to
 select from.  In the example above we constrain
 the user choices to the codes for Monday - Friday
 and return the choice in the 'start_day' form variable.
+
+
+<h4>'options' =&gt; 'onchange="submit()"'</h4>
+
+You can select select options using the optional
+'options' option.  Separate multiple options
+with spaces.
 
 
 <a name="single"></a>
@@ -155,17 +171,17 @@ the common options listed above plus some method specific options.
 
 <pre>
 <b># PHP</b>
-$html = $babelkit->select($code_set, $code_lang, array(
-                          'select_prompt' => 'Code set description?',
-                          'blank_prompt'  => 'None'
+$html = $babelkit-&gt;select($code_set, $code_lang, array(
+                          'select_prompt' =&gt; 'Code set description?',
+                          'blank_prompt'  =&gt; 'None'
                           ));
 </pre>
 
 <pre>
 <b># Perl</b>
-$html = $babelkit->select($code_set, $code_lang,
-                          select_prompt => 'Code set description?',
-                          blank_prompt  => 'None'
+$html = $babelkit-&gt;select($code_set, $code_lang,
+                          select_prompt =&gt; 'Code set description?',
+                          blank_prompt  =&gt; 'None'
                           );
 </pre>
 
@@ -187,17 +203,17 @@ blank out an initial selection.
 
 <pre>
 <b># PHP</b>
-$html = $babelkit->radio($code_set, $code_lang, array(
-                         'sep'          => "&lt;br&gt;\n",
-                         'blank_prompt' => 'None'
+$html = $babelkit-&gt;radio($code_set, $code_lang, array(
+                         'sep'          =&gt; "&lt;br&gt;\n",
+                         'blank_prompt' =&gt; 'None'
                          ));
 </pre>
 
 <pre>
 <b># Perl</b>
-$html = $babelkit->radio($code_set, $code_lang,
-                         sep          => "&lt;br&gt;\n",
-                         blank_prompt => 'None'
+$html = $babelkit-&gt;radio($code_set, $code_lang,
+                         sep          =&gt; "&lt;br&gt;\n",
+                         blank_prompt =&gt; 'None'
                          );
 </pre>
 
@@ -228,15 +244,15 @@ to pass in an array value.
 
 <pre>
 <b># PHP</b>
-$html = $babelkit->multiple($code_set, $code_lang, array(
-                            'size' => 10
+$html = $babelkit-&gt;multiple($code_set, $code_lang, array(
+                            'size' =&gt; 10
                             ));
 </pre>
 
 <pre>
 <b># Perl</b>
-$html = $babelkit->multiple($code_set, $code_lang,
-                            size => 10
+$html = $babelkit-&gt;multiple($code_set, $code_lang,
+                            size =&gt; 10
                             );
 </pre>
 
@@ -250,15 +266,15 @@ to scroll.
 
 <pre>
 <b># PHP</b>
-$html = $babelkit->checkbox($code_set, $code_lang, array(
-                            'sep' => "&lt;br&gt;\n"
+$html = $babelkit-&gt;checkbox($code_set, $code_lang, array(
+                            'sep' =&gt; "&lt;br&gt;\n"
                             ));
 </pre>
 
 <pre>
 <b># Perl</b>
-$html = $babelkit->checkbox($code_set, $code_lang,
-                            sep => "&lt;br&gt;\n"
+$html = $babelkit-&gt;checkbox($code_set, $code_lang,
+                            sep =&gt; "&lt;br&gt;\n"
                             );
 </pre>
 
@@ -268,6 +284,14 @@ user selections.
 <p>
 'sep' is the string to insert between checkbox
 elements.  It defaults to "&lt;br&gt;\n".
+
+
+<p>
+<div align="right">
+[<a href="bk_read.html">Code Descriptions</a>]
+[<a href="index.html">Index</a>]
+[<a href="bk_set.html">Code Sets</a>]
+</div>
 
 
 </td>
